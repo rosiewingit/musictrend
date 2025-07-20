@@ -19,8 +19,7 @@ jobs:
         run: |
           cd backend
           python -m venv venv
-          source venv/bin/activate
-          pip install -r requirements.txt
+          ./venv/bin/pip install -r requirements.txt
       - name: Run DB init
         run: |
           cd backend/db
@@ -44,7 +43,7 @@ jobs:
       - name: Export chart data to JSON
         run: |
           cd backend
-          venv/bin/python main.py
+          ./venv/bin/python main.py
       - name: Commit & Push data
         run: |
           git config --global user.name 'github-actions'
