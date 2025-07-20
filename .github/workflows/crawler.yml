@@ -11,6 +11,10 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+      - name: Check backend folder
+        run: |
+          ls -al
+          ls -al backend
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -19,7 +23,9 @@ jobs:
         run: |
           cd backend
           python -m venv venv
-          ls -al venv/bin
+          ls -al
+          ls -al venv
+          ls -al venv/bin || true
       - name: Install dependencies
         run: |
           cd backend
