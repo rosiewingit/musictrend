@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from datetime import date
 
 CHART_URL = 'https://soundcloud.com/charts/top?genre=all-music&country=all-countries'
-DB_PATH = '../musictrend.db'
+DB_PATH = 'backend/musictrend.db'
 
 # 유튜브 검색 URL 템플릿
 YOUTUBE_SEARCH_URL = 'https://www.youtube.com/results?search_query={}'
@@ -19,6 +19,9 @@ def crawl_soundcloud_chart():
     })
     soup = BeautifulSoup(resp.text, 'html.parser')
     cards = soup.select('li.chartTracks__item')
+    print(f'[DEBUG] cards found: {len(cards)}')  # 크롤링 결과 개수 출력
+    if len(cards) == 0:
+        print('[WARNING] 사운드클라우드 차트 크롤링 결과가 없습니다. 셀렉터/사이트 구조를 점검하세요.')
     result = []
     for i, card in enumerate(cards[:10]):
         title_tag = card.select_one('a.chartTrack__title')

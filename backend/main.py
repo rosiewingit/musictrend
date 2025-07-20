@@ -4,8 +4,8 @@ import json
 from datetime import date
 
 # DB 파일 경로
-DB_PATH = 'musictrend.db'
-DATA_DIR = '../data'
+DB_PATH = 'backend/musictrend.db'
+DATA_DIR = 'data'
 
 # DB 초기화 함수
 def init_db():
@@ -154,12 +154,23 @@ def export_beatport_chart_to_json(target_date=None):
     print(f'Beatport 차트 데이터가 {out_path}에 저장되었습니다.')
 
 if __name__ == '__main__':
-    # DB 초기화 및 샘플 데이터 삽입(기존 코드 유지)
+    from crawler.beatport import crawl_beatport_chart, save_to_db as save_beatport
+    from crawler.soundcloud import crawl_soundcloud_chart, save_to_db as save_soundcloud
+    from crawler.youtube import crawl_youtube_chart, save_to_db as save_youtube
+
     init_db()
     insert_sample()
     print('DB 초기화 및 샘플 데이터 삽입 완료!')
-    # 날짜별 Spotify/YouTube 차트 JSON 내보내기
+
+    # 크롤링 및 DB 저장
+    beatport_data = crawl_beatport_chart()
+    save_beatport(beatport_data)
+    soundcloud_data = crawl_soundcloud_chart()
+    save_soundcloud(soundcloud_data)
+    youtube_data = crawl_youtube_chart()
+    save_youtube(youtube_data)
+
     export_spotify_chart_to_json()
     export_youtube_chart_to_json()
     export_soundcloud_chart_to_json()
-    export_beatport_chart_to_json() 
+    export_beatport_chart_to_json()

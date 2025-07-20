@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from datetime import date
 
 CHART_URL = 'https://www.beatport.com/genre/techno-peak-time-driving/6/top-100'
-DB_PATH = '../musictrend.db'
+DB_PATH = 'backend/musictrend.db'
 
 # 유튜브 검색 URL 템플릿
 YOUTUBE_SEARCH_URL = 'https://www.youtube.com/results?search_query={}'
@@ -19,6 +19,9 @@ def crawl_beatport_chart():
     })
     soup = BeautifulSoup(resp.text, 'html.parser')
     tracks = soup.select('li.bucket-item.ec-item.track')
+    print(f'[DEBUG] tracks found: {len(tracks)}')  # 크롤링 결과 개수 출력
+    if len(tracks) == 0:
+        print('[WARNING] 비트포트 차트 크롤링 결과가 없습니다. 셀렉터/사이트 구조를 점검하세요.')
     result = []
     for i, track in enumerate(tracks[:10]):
         title_tag = track.select_one('span.ec-item-track')

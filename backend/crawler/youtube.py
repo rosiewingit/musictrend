@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from datetime import date
 
 CHART_URL = 'https://charts.youtube.com/charts/TopSongs/global'
-DB_PATH = '../musictrend.db'
+DB_PATH = 'backend/musictrend.db'
 
 # 유튜브 검색 URL 템플릿
 YOUTUBE_SEARCH_URL = 'https://www.youtube.com/results?search_query={}'
@@ -19,6 +19,9 @@ def crawl_youtube_chart():
     })
     soup = BeautifulSoup(resp.text, 'html.parser')
     rows = soup.select('ytmc-entity-row')
+    print(f'[DEBUG] rows found: {len(rows)}')  # 크롤링 결과 개수 출력
+    if len(rows) == 0:
+        print('[WARNING] 유튜브 차트 크롤링 결과가 없습니다. 셀렉터/사이트 구조를 점검하세요.')
     result = []
     for i, row in enumerate(rows[:10]):
         # YouTube Music Charts는 구조가 자주 바뀌므로, 실제로는 API나 더 정교한 파싱 필요

@@ -6,7 +6,7 @@ import re
 
 # Spotify Top 50 Korea 차트 URL (공식 API가 아니므로 웹 크롤링)
 CHART_URL = 'https://spotifycharts.com/regional/kr/daily/latest'
-DB_PATH = '../musictrend.db'
+DB_PATH = 'backend/musictrend.db'
 
 # 유튜브 검색 URL 템플릿 (간단 매칭용)
 YOUTUBE_SEARCH_URL = 'https://www.youtube.com/results?search_query={}'
