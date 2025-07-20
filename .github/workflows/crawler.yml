@@ -19,31 +19,20 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.9'
-      - name: Install venv and pip dependencies
-        run: sudo apt-get update && sudo apt-get install -y python3-venv python3-pip
-      - name: Create virtual environment
-        run: python3 -m venv backend/venv
-      - name: Fix python3 symlink in venv (if needed)
-        run: |
-          if [ ! -f backend/venv/bin/python3 ] && [ -f backend/venv/bin/python ]; then
-            ln -s python backend/venv/bin/python3
-          fi
-      - name: List venv bin directory
-        run: ls -al backend/venv/bin
       - name: Install dependencies
-        run: backend/venv/bin/pip install -r backend/requirements.txt
+        run: pip install -r backend/requirements.txt
       - name: Run DB init
-        run: backend/venv/bin/python backend/db/init_db.py
+        run: python backend/db/init_db.py
       - name: Run Spotify Crawler
-        run: backend/venv/bin/python backend/crawler/spotify.py
+        run: python backend/crawler/spotify.py
       - name: Run YouTube Crawler
-        run: backend/venv/bin/python backend/crawler/youtube.py
+        run: python backend/crawler/youtube.py
       - name: Run SoundCloud Crawler
-        run: backend/venv/bin/python backend/crawler/soundcloud.py
+        run: python backend/crawler/soundcloud.py
       - name: Run Beatport Crawler
-        run: backend/venv/bin/python backend/crawler/beatport.py
+        run: python backend/crawler/beatport.py
       - name: Export chart data to JSON
-        run: backend/venv/bin/python backend/main.py
+        run: python backend/main.py
       - name: Commit & Push data
         run: |
           git config --global user.name 'github-actions'
