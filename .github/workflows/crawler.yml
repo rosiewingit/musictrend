@@ -19,17 +19,10 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.9'
-      - name: Set up venv
-        run: |
-          cd backend
-          python -m venv venv
-          ls -al
-          ls -al venv
-          ls -al venv/bin || true
+      - name: Create virtual environment
+        run: python -m venv backend/venv
       - name: Install dependencies
-        run: |
-          cd backend
-          ./venv/bin/pip install -r requirements.txt
+        run: backend/venv/bin/pip install -r backend/requirements.txt
       - name: Run DB init
         run: backend/venv/bin/python backend/db/init_db.py
       - name: Run Spotify Crawler
