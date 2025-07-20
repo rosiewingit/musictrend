@@ -34,9 +34,12 @@ jobs:
       - name: Export chart data to JSON
         run: python backend/main.py
       - name: Commit & Push data
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config --global user.name 'github-actions'
           git config --global user.email 'github-actions@github.com'
+          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/${{ github.repository }}.git
           git add data
           git add musictrend.db
           git commit -m '자동 크롤링 데이터 업데이트' || echo 'No changes'
