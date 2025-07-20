@@ -19,10 +19,15 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.9'
-      - name: Install venv dependencies
-        run: sudo apt-get update && sudo apt-get install -y python3-venv
+      - name: Install venv and pip dependencies
+        run: sudo apt-get update && sudo apt-get install -y python3-venv python3-pip
       - name: Create virtual environment
         run: python3 -m venv backend/venv
+      - name: Fix python3 symlink in venv (if needed)
+        run: |
+          if [ ! -f backend/venv/bin/python3 ] && [ -f backend/venv/bin/python ]; then
+            ln -s python backend/venv/bin/python3
+          fi
       - name: List venv bin directory
         run: ls -al backend/venv/bin
       - name: Install dependencies
