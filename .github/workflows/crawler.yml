@@ -1,0 +1,55 @@
+name: Daily Music Chart Crawler
+
+on:
+  schedule:
+    - cron: '0 22 * * *' # 매일 오전 7시(KST, UTC+9)
+  workflow_dispatch:
+
+jobs:
+  run-crawler:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+      - name: Install dependencies
+        run: |
+          cd backend
+          python -m venv venv
+          source venv/bin/activate
+          pip install -r requirements.txt
+      - name: Run DB init
+        run: |
+          cd backend/db
+          ../venv/bin/python init_db.py
+      - name: Run Spotify Crawler
+        run: |
+          cd backend/crawler
+          ../../venv/bin/python spotify.py
+      - name: Run YouTube Crawler
+        run: |
+          cd backend/crawler
+          ../../venv/bin/python youtube.py
+      - name: Run SoundCloud Crawler
+        run: |
+          cd backend/crawler
+          ../../venv/bin/python soundcloud.py
+      - name: Run Beatport Crawler
+        run: |
+          cd backend/crawler
+          ../../venv/bin/python beatport.py
+      - name: Export chart data to JSON
+        run: |
+          cd backend
+          venv/bin/python main.py
+      - name: Commit & Push data
+        run: |
+          git config --global user.name 'github-actions'
+          git config --global user.email 'github-actions@github.com'
+          git add ../data
+          git add musictrend.db
+          git commit -m '자동 크롤링 데이터 업데이트' || echo 'No changes'
+          git push
