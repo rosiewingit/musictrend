@@ -1,0 +1,13 @@
+[
+  {
+    "title": "Sample Song",
+    "artist": "Sample Artist",
+    "platform": "Spotify",
+    "rank": 1,
+    "genre": "Pop",
+    "country": "KR",
+    "age_group": "20s",
+    "chart_date": "2025-12-08",
+    "youtube_url": "https://youtube.com/watch?v=xxxx"
+  }
+]
